@@ -11,16 +11,24 @@
  * @method   printDetails
  */
 
+function Spell(name,cost,description) {
+  this.name = name;
+  this.cost = cost;
+  this.description = description;
+
+}
   /**
    * @method printDetails
-   * 
+   *
    * Print out all spell details and format it nicely.
    * The format doesnt matter, as long as it contains the spell name, cost, and description.
    *
    * note: using comma separated arguments for console.log() will not satisfy the tests
    * e.g. console.log(a, b, c); <-- no commas, please use string concatenation.
    */
-
+Spell.prototype.printDetails = function () {
+  console.log("the spell is:" + this.name + " and it costs:" + this.cost + "what it does:" + this.description);
+};
 /**
  * A spell that deals damage.
  * We want to keep this code DRY (Don't Repeat Yourself).
@@ -46,6 +54,13 @@
  * @property {string} description
  */
 
+function DamageSpell(damage, name, cost, description) {
+//  I don't understand how the following line is working
+  Spell.call(this, damage, name,description);
+
+}
+
+DamageSpell.prototype = new Spell();
 /**
  * Now that you've created some spells, let's create
  * `Spellcaster` objects that can use them!
@@ -63,9 +78,17 @@
  * @method  invoke
  */
 
+ function Spellcaster(name, health, mana) {
+   this.name = name;
+   this.health = health;
+   this.mana = mana;
+   this.isAlive = true;
+
+ }
+
   /**
    * @method inflictDamage
-   * 
+   *
    * The spellcaster loses health equal to `damage`.
    * Health should never be negative.
    * If the spellcaster's health drops to 0,
@@ -74,19 +97,29 @@
    * @param  {number} damage  Amount of damage to deal to the spellcaster
    */
 
+Spellcaster.prototype.inflictDamage = function(number) {
+  this.health = this.health - number;
+  if(this.health <=0) {
+    this.isAlive = false;
+    this.health = 0;
+  }
+
+};
   /**
    * @method spendMana
-   * 
+   *
    * Reduces the spellcaster's mana by `cost`.
    * Mana should only be reduced only if there is enough mana to spend.
    *
    * @param  {number} cost      The amount of mana to spend.
    * @return {boolean} success  Whether mana was successfully spent.
    */
+Spellcaster.prototype.spendMana = function() {
 
+};
   /**
    * @method invoke
-   * 
+   *
    * Allows the spellcaster to cast spells.
    * The first parameter should either be a `Spell` or `DamageSpell`.
    * If it is a `DamageSpell`, the second parameter should be a `Spellcaster`.
@@ -110,3 +143,4 @@
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
+Spellcaster.prototype.invoke = function() {};
